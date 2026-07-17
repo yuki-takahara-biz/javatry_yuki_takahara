@@ -49,21 +49,32 @@ public class Step01VariableTest extends PlainTestCase {
         sea = sea + land + piari + ":" + dstore;
         log(sea); // your answer? => mystic8:mai(x) => mystic8null:mai(o)
         // 髙原：null文字が空文字になることを理解しました。
-        // TODO takahara 空文字ではなく"null"という文字列になりますね。 by noniwa
-        // TODO takahara [ふぉろー] ここはプログラミング言語の決めの問題で... by jflute (2026/07/16)
+        // TODO done takahara 空文字ではなく"null"という文字列になりますね。 by noniwa
+        // done takahara [ふぉろー] ここはプログラミング言語の決めの問題で... by jflute (2026/07/16)
         // Javaだと "null" で出ますが、C#だと空文字だったりします。
         // 本番環境で画面やメール文言にnullって表示されちゃう事故が起きやすい一方で、
         // 開発時はログや画面でnullって表示されてミスに気づきやすいって面も。
         // どっちもどっちという感じですね。ただ特徴は知っておきましょうと。
+
+        // #1on1: nullのネタ話。メールって画面よりも油断しがち (2026/07/17)
+        // #1on1: メリデメの話 (2026/07/17)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
-        sea = land;
-        land = land + "'s dreams";
+        String sea = "mystic"; // 1丁目1番地
+        String land = "oneman"; // 2丁目2番地
+        sea = land; // seaの紙を、1丁目1番地から2丁目2番地に書き換えた
+        land = land + "'s dreams"; // 2丁目2番地 + 3丁目3番地 = 4丁目4番地
         log(sea); // your answer? => oneman
+
+        // #1on1: インスタンスとは？ (2026/07/17)
+        // 一軒家の例えをしてみた。
+        // ローカル変数、インスタンス変数。
+        // ここだと、
+        // "mystic", "oneman", "'s dreams", "oneman's dreams" の4インスタンス。
+
+        // #1on1: 変数のお話 (2026/07/17)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -73,6 +84,10 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         land++;
         log(sea); // your answer? => 415
+
+        // #1on1: プリミティブ型(オブジェクトじゃないもの)、値そのものが変数に入ってる (2026/07/17)
+        // Kotlinとかだと、intって書いてもオブジェクトで、Integerクラス扱い(だったような)
+        // Javaが、C言語意識してか、インフラ面を意識してか、プリミティブ型を残した。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -101,16 +116,37 @@ public class Step01VariableTest extends PlainTestCase {
         // クラスも制限がもしかしたらあるかもですが、基本的には使えるはずです。
 
         // 髙原：BigDecimal が持っているメソッドについて知りたいと思いました。
-        // TODO takahara [ふぉろー] add()については1on1でじっくり一緒に追求しましょう！ by jflute (2026/07/16)
+        // done takahara [ふぉろー] add()については1on1でじっくり一緒に追求しましょう！ by jflute (2026/07/16)
 
-        // TODO takahara Primitive型はnewが不要で、Object型はnewが必要ですね。 by noniwa
+        // done takahara Primitive型はnewが不要で、Object型はnewが必要ですね。 by noniwa
         //  型は大まかにPrimitiveとObject型があって、Object型変数は値そのものではなく値が格納されているメモリアドレスを保持している。
         //  具体的にどんな型があるのかはjavatry進めるうちに自然と覚えると思うので、まず以上を押さえておけば良いと思います。
 
-        // TODO jflute 1on1にて、immutableについてのお話をする予定 (2026/07/16)
+        // done jflute 1on1にて、immutableについてのお話をする予定 (2026/07/16)
         // ↑このとぅどぅはくぼ用の備忘録なので、そのまま置いておいてください。
+        // #1on1: immutableとは？(immutableが初耳だった) (2026/07/17)
+        // BigDecimalはimmutable, JavaDocで宣言されてるし、インスタンス変数がfinal。
+        // なので、インスタンスの状態が変わらない → immutable
+        // 一方で、mutableだとインスタンス変数を書き換えて、状態を変えることができる。
+        //
+        // immutableのメリット: 絶対に変更したくない値を間違ってもいじれないので安全/安心、可読性
+        // immutableのデメリット: sea.add()のケース、メモリ効率が悪い
+        // mutableのメリット: メモリ効率が良い、mutableの方が書くのが簡単なケースある
+        // mutableのデメリット: 間違って変えちゃう可能性、変わるかもしれないって疑いで読まないといけない(可読性)
+        //
+        // immutableの歴史のお話。
+        // バランスの話。100%目指すのか？80%なのか？
+        // 言語の文化、組織の文化、個人の文化。
+        //
+        // 変数のimmutableとインスタンスのimmutableの違い。
+
+        // #1on1: BigDecimalインスタンスのお話 (2026/07/17)
+        // add()の中でnewされている。
     }
 
+    // TODO jflute 次回1on1ここから (2026/07/17)
+    // 裏隔週で、Instance Variable と Method Argument のところを復習してもらう。
+    // おそらく、いま見直せば色々理解できるようになっている。
     // ===================================================================================
     //                                                                   Instance Variable
     //                                                                   =================
@@ -130,7 +166,7 @@ public class Step01VariableTest extends PlainTestCase {
         //  > 定義していないときは null という認識。
         //  合っています！定義していないときは参照するオブジェクトがない（値が格納されているメモリアドレスを保持していない）のでnullになります。
 
-        // TODO jflute 1on1にて、変数とインスタンス、そしてインスタンス変数の概念についてフォロー予定 (2026/07/16)
+        // done jflute 1on1にて、変数とインスタンス、そしてインスタンス変数の概念についてフォロー予定 (2026/07/16)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */

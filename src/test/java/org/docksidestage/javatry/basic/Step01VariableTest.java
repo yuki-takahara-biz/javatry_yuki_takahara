@@ -49,7 +49,7 @@ public class Step01VariableTest extends PlainTestCase {
         sea = sea + land + piari + ":" + dstore;
         log(sea); // your answer? => mystic8:mai(x) => mystic8null:mai(o)
         // 髙原：null文字が空文字になることを理解しました。
-        // TODO done takahara 空文字ではなく"null"という文字列になりますね。 by noniwa
+        // done takahara 空文字ではなく"null"という文字列になりますね。 by noniwa
         // done takahara [ふぉろー] ここはプログラミング言語の決めの問題で... by jflute (2026/07/16)
         // Javaだと "null" で出ますが、C#だと空文字だったりします。
         // 本番環境で画面やメール文言にnullって表示されちゃう事故が起きやすい一方で、
@@ -99,7 +99,7 @@ public class Step01VariableTest extends PlainTestCase {
         sea.add(new BigDecimal(1));
         log(sea); // your answer? => 416
         // 髙原：new が必要な時とそうでない時の違いについて知りたい。int は new が要らない。
-        // TODO takahara [ふぉろー] intはプリミティブ型という特殊なデータ型で... by jflute (2026/07/16)
+        // done takahara [ふぉろー] intはプリミティブ型という特殊なデータ型で... by jflute (2026/07/16)
         // 値そのものが変数に入っているというイメージを持ってもらえればと。94そのものが変数に入っていると。
         // 一方で、BigDecimalやStringのようなオブジェクト型(こっちがほとんど)は、
         // 必ずnewしてインスタンスを生成します。構造の実体を作り上げるようなイメージです。
@@ -107,7 +107,7 @@ public class Step01VariableTest extends PlainTestCase {
         // なので、変数はただのリモコンで、実体は別の場所(メモリ上のどこか)に存在していると言う感じです。
 
         // 髙原：Java の型について知りたいと思いました。合わせて、Java の型は Kotlin でも同様に使用可能なのか知りたいです。
-        // TODO takahara [ふぉろー] 基本的には Kotlin でも利用可能です by jflute (2026/07/16)
+        // done takahara [ふぉろー] 基本的には Kotlin でも利用可能です by jflute (2026/07/16)
         // というのは、Kotlinの実行環境はJava(Runtime)だからです。
         //  Java   という言語 → コンパイルされてJavaバイトコードに変換されて → Java実行環境で動く
         //  Kotlin という言語 → コンパイルされてJavaバイトコードに変換されて → Java実行環境で動く
@@ -161,7 +161,7 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => 解りませんでした
         // 髙原：instance variable とは何かを理解したい。
         // 髙原：定義していないときは null という認識。
-        // TODO takahara instance variableはその名の通りインスタンスが保持する変数で、class variableはクラスが保持する変数です。 by noniwa
+        // done takahara instance variableはその名の通りインスタンスが保持する変数で、class variableはクラスが保持する変数です。 by noniwa
         //  staticキーワードとともに宣言されていたら、それはclass variableです。
         //  > 定義していないときは null という認識。
         //  合っています！定義していないときは参照するオブジェクトがない（値が格納されているメモリアドレスを保持していない）のでnullになります。
@@ -175,7 +175,7 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => null => 違いました、0でした。
         // 髙原：定義していない変数については、String の時 null になって、int の時は 0 になるという理解。
         // 髙原：他の型だとどうなるのか気になる。
-        // TODO takahara Primitive型とObject型の変数がそれぞれ何を保持しているのかを考えると分かるかも？ by noniwa
+        // done takahara Primitive型とObject型の変数がそれぞれ何を保持しているのかを考えると分かるかも？ by noniwa
         //  Hint: nullは参照先がない状態を示す
     }
 
@@ -184,7 +184,7 @@ public class Step01VariableTest extends PlainTestCase {
         Integer sea = instanceHangar;
         log(sea); // your answer? => 0 => 違いました、nullでした。
         // 髙原：int と Integer の違いは何か
-        // TODO takahara 1つ前が理解できればこちらも分かるはず！ by noniwa
+        // done takahara 1つ前が理解できればこちらも分かるはず！ by noniwa
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -195,7 +195,7 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
         log(sea); // your answer? => bigband|1||magician => bigband|1|null|magician でした。
         // 髙原：null は「null」として表示されることを理解しました。
-        // TODO takahara ナイスです！ by noniwa
+        // done takahara ナイスです！ by noniwa
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -217,7 +217,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentImmutableMethodcall(sea, land);
         log(sea); // your answer? => harbor
         // 髙原：sea はグローバル変数ではないので関数を通しても変化しない
-        // TODO takahara ナイスです！ローカル変数を値渡ししていますね。（Javaは参照渡しはしないので全て値渡し） by noniwa
+        // done takahara ナイスです！ローカル変数を値渡ししていますね。（Javaは参照渡しはしないので全て値渡し） by noniwa
         //  sea.concat(landStr)の結果を使いたいならhelperメソッドの返り値で返してあげる必要がありますね。
     }
 
@@ -237,7 +237,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentMethodcall(sea, land);
         log(sea); // your answer? => harbor => harbor416 でした。
         // 髙原：なぜこうなるのか理解ができていないです
-        // TODO takahara Stringはimmutable(不変)ですが、StringBuilderはmutable(可変)です。 by noniwa
+        // done takahara Stringはimmutable(不変)ですが、StringBuilderはmutable(可変)です。 by noniwa
         //  Stringのconcat()とStringBuilderのappend()は似てますが、前者は新しくインスタンスを生成するのに対して
         //  後者はメソッドを呼び出したインスタンスの状態を直接変えます。
         //  また、Object型の場合、値渡しでメモリアドレスのコピーを渡していることになるのも注意が必要です。
@@ -258,7 +258,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentVariable(sea, land);
         log(sea); // your answer? => harbor416 => harbor でした。
         // 髙原：なぜこうなるのか理解できていないです。
-        // TODO takahara 1つ前が理解できるとこちらも分かるかも？ by noniwa
+        // done takahara 1つ前が理解できるとこちらも分かるかも？ by noniwa
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -319,7 +319,7 @@ public class Step01VariableTest extends PlainTestCase {
         String a = "huga";
         log(a); // 答え：huga
         //髙原：関数の中の変数の方が優先される。インスタンス変数の方にアクセスしたい場合はどうすればいい？
-        // TODO takahara Javaにはthisという"現在のこのクラスのインスタンス"を示すキーワードがあるので、それを使えばアクセスできますね。 by noniwa
+        // done takahara Javaにはthisという"現在のこのクラスのインスタンス"を示すキーワードがあるので、それを使えばアクセスできますね。 by noniwa
         log(this.a);
     }
 }

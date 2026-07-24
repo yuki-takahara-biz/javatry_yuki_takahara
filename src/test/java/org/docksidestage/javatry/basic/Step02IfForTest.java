@@ -52,7 +52,8 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
+        // 髙原：if文とかは理解できていると思っています。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +68,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -83,31 +84,37 @@ public class Step02IfForTest extends PlainTestCase {
         } else if (sea >= 903 || land) {
             if (sea % 2 == 0) {
                 sea = sea++ * 2;
+                // 髙原：これが実行される。この時点でseaは904から1808になる
             }
             if (!land) {
                 land = true;
+                // 髙原：これが実行される
             } else if (sea <= 903) {
                 sea++;
             }
             if (sea < 1810) {
                 sea = 8;
+                // 髙原：これが実行される
             }
         } else if (sea == 8) {
             sea++;
             land = false;
+            // 髙原：これが実行される。現時点でseaは8から9になる。landはtrueからfalseになる。
         } else {
             sea = 9;
         }
         if (sea >= 9 || (sea > 7 && sea < 9)) {
             sea--;
+            // 髙原：seaは9から8になる
             if (sea % 2 == 1) {
                 sea++;
+                //髙原：seaは8から9になる
             }
         }
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 8
     }
 
     // ===================================================================================
@@ -123,7 +130,8 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
+        // 髙原：Javaでもリストや辞書などを扱えるようになりたいと思いました。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -133,7 +141,8 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
+        // 髙原：seaの値がbroadway ->  ... -> magiclamp に順に更新されていく
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -149,7 +158,9 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
+        // 髙原：seaがhangarの時breakが発動する
+        // 髙原：文字（列）の一致について学びたい。正規表現とかも使える方法があるのだろうか
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -165,7 +176,8 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 先にreturngが発動するのでlogが実行されない。
+        // 髙原：stageが"dockerside"の時にsbが"dockerside"になってreturnが発動するのでlogまでいかないと思っていたら、"dockerside"が出力された🤔
     }
 
     // ===================================================================================
@@ -175,8 +187,15 @@ public class Step02IfForTest extends PlainTestCase {
      * Make list containing "a" from list of prepareStageList() and show it as log by loop. (without Stream API) <br>
      * (prepareStageList()のリストから "a" が含まれているものだけのリストを作成して、それをループで回してログに表示しましょう。(Stream APIなしで))
      */
+    // TODO jflute noniwa ここまで完了しました🫡 レビューよろしくお願いします！🙇
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList = prepareStageList();
+        for (String stage: stageList){
+            if (stage.contains("a")) {
+                log(stage);
+            }
+        }
     }
 
     // ===================================================================================

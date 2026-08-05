@@ -115,6 +115,7 @@ public class Step02IfForTest extends PlainTestCase {
             sea = 10;
         }
         log(sea); // your answer? => 8
+        // TODO takahara 実際に実行して答えを確認してみてください〜 by jflute (2026/08/05)
     }
 
     // ===================================================================================
@@ -132,6 +133,8 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(sea); // your answer? => dockside
         // 髙原：Javaでもリストや辞書などを扱えるようになりたいと思いました。
+        // TODO takahara [いいね] コレクションは基礎の基礎ですからね。 by jflute (2026/08/05)
+        // 他の言語とも比較しやすい素材ではありますのでぜひ(^^。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -176,8 +179,16 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 先にreturngが発動するのでlogが実行されない。
+        log(sea); // your answer? => 先にreturnが発動するのでlogが実行されない。
         // 髙原：stageが"dockerside"の時にsbが"dockerside"になってreturnが発動するのでlogまでいかないと思っていたら、"dockerside"が出力された🤔
+        // TODO takahara [ふぉろー] returnしてるのに不思議ですよね(^^ by jflute (2026/08/05)
+        // forEach()メソッドのよるループは、ループ内の処理がコールバックになっています。
+        // -> { } のカッコ内が、厳密には別クラスの別メソッドになっています。
+        // なので、{ } の中で return しても、その別メソッドが終了しただけということになります。
+        // 1on1でフォローしますが、良かったら forEach() のソースコード読んでみてください(^^。
+
+        // TODO jflute 1on1にて、intあいのfor文、普通のfor文、forいーちメソッドのお話 (2026/08/05)
+        // TODO jflute 1on1にて、コールバック先取り (2026/08/05)
     }
 
     // ===================================================================================
@@ -187,11 +198,11 @@ public class Step02IfForTest extends PlainTestCase {
      * Make list containing "a" from list of prepareStageList() and show it as log by loop. (without Stream API) <br>
      * (prepareStageList()のリストから "a" が含まれているものだけのリストを作成して、それをループで回してログに表示しましょう。(Stream APIなしで))
      */
-    // TODO jflute noniwa ここまで完了しました🫡 レビューよろしくお願いします！🙇
+    // TODO done jflute noniwa ここまで完了しました🫡 レビューよろしくお願いします！🙇
     public void test_iffor_making() {
         // write if-for here
         List<String> stageList = prepareStageList();
-        for (String stage: stageList){
+        for (String stage : stageList) {
             if (stage.contains("a")) {
                 log(stage);
             }

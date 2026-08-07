@@ -144,7 +144,7 @@ public class Step01VariableTest extends PlainTestCase {
         // add()の中でnewされている。
     }
 
-    // TODO jflute 次回1on1ここから (2026/07/17)
+    // done jflute 次回1on1ここから (2026/07/17)
     // 裏隔週で、Instance Variable と Method Argument のところを復習してもらう。
     // おそらく、いま見直せば色々理解できるようになっている。
     // ===================================================================================
@@ -219,6 +219,7 @@ public class Step01VariableTest extends PlainTestCase {
         // 髙原：sea はグローバル変数ではないので関数を通しても変化しない
         // done takahara ナイスです！ローカル変数を値渡ししていますね。（Javaは参照渡しはしないので全て値渡し） by noniwa
         //  sea.concat(landStr)の結果を使いたいならhelperメソッドの返り値で返してあげる必要がありますね。
+        // #1on1: immutableの引数なので、実はhelpを読まなくても答えがわかっちゃう (2026/08/07)
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -241,6 +242,13 @@ public class Step01VariableTest extends PlainTestCase {
         //  Stringのconcat()とStringBuilderのappend()は似てますが、前者は新しくインスタンスを生成するのに対して
         //  後者はメソッドを呼び出したインスタンスの状態を直接変えます。
         //  また、Object型の場合、値渡しでメモリアドレスのコピーを渡していることになるのも注意が必要です。
+        // #1on1: mutableの引数は、中でに何されるかわからないので、ちゃんと読まないと (2026/08/07)
+        // 実際にhelpで何も変更してないにしても、変更してないことを確認しないといけない。
+        // immutableの引数であれば、変更してないことが最初からわかる。
+        // immutableというのは情報である。
+        //
+        // もし、immutable/mutableの使い分けを徹底していたら、mutableも情報になる。
+        // mutableの引数なら絶対に書き換えてる、って情報にすることができる。
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -266,7 +274,7 @@ public class Step01VariableTest extends PlainTestCase {
         String seaStr = sea.toString(); // is "harbor"
         sea = new StringBuilder(seaStr).append(land);
     }
-    // TODO jflute noniwaさんのフォローも含めて1on1でもろもろ一緒に解釈していく (2026/07/16)
+    // done jflute noniwaさんのフォローも含めて1on1でもろもろ一緒に解釈していく (2026/07/16)
 
     // ===================================================================================
     //                                                                           Challenge

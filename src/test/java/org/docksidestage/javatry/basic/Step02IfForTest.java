@@ -262,18 +262,18 @@ public class Step02IfForTest extends PlainTestCase {
      * (prepareStageList()のリストから "a" が含まれているものだけのリストを作成して、それをループで回してログに表示しましょう。(Stream APIなしで))
      */
     // done jflute noniwa ここまで完了しました🫡 レビューよろしくお願いします！🙇
-    // TODO jflute noniwa ここからファイルの最後までお願いします！🙇
+    // done jflute noniwa ここからファイルの最後までお願いします！🙇
     public void test_iffor_making() {
         // write if-for here
         List<String> stageList = prepareStageList();
         List<String> answerList = new ArrayList<>();
         for (String stage : stageList) {
             if (stage.contains("a")) {
-//                log(stage);
+                //                log(stage);
                 answerList.add(stage);
             }
         }
-        for (String answer : answerList){
+        for (String answer : answerList) {
             log(answer);
         }
     }
@@ -287,19 +287,53 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-//        String sea = null;
-//        for (String stage : stageList) {
-//            if (stage.startsWith("br")) {
-//                continue;
-//            }
-//            sea = stage;
-//            if (stage.contains("ga")) {
-//                break;
-//            }
-//        }
-        StringBuilder sea = new StringBuilder();
+        //        String sea = null;
+        //        for (String stage : stageList) {
+        //            if (stage.startsWith("br")) {
+        //                continue;
+        //            }
+        //            sea = stage;
+        //            if (stage.contains("ga")) {
+        //                break;
+        //            }
+        //        }
+        // #1on1: Lambda式の中で、外側のローカル変数を再代入できないのはなぜ？ (2026/08/21) 
+        // ちなみに、Lambda式の中で外側のローカル変数の参照はできる。
+        // これはfinal付いてるか、実質的finalならOK。
+        // 書き換えたことがある変数だと、その後も書き換える可能性があるのでダメ。
+        //
+        // Lambda式は、別クラスの別メソッドだと考えてみると、理由がわかってくる。
+        // Consumerインターフェースをimplementsしたオブジェクトを指定しないといけないが...
+        // それを簡易に表現できるのがLambda式。new Abc() (implements Consumer) とやっているのと同じ。
+        // なのでLambdaの {} の処理は、test_メソッドに所属しているコードではなく、
+        // Abcクラスに所属しているコードとなる。つまり別クラスの別メソッド。
+        // そう考えた時、とあるローカル変数の値を別クラスの別メソッドが変更できるって...大変じゃない？
+        // 変数の共有が起きてしまって、例えばマルチスレッドとかでへんてこりんなことになる。
+        // なので、Lambda式 (別クラスの別メソッド) の中では外側のローカルは書き換えられないようにしている。
+        // ローカル変数はどんな使い方しても、ローカル変数であって欲しい。
+        // 参照だけはへんなことが起きないので、なので許されている。
+        // だから、finalな変数、もしくは、実質finalな変数だったら参照がOK。
+        //  e.g. String land = "a";
+        //
+        // なのでなので、continueもbreakも使えない。
+        // ただの別クラス別メソッドであって、ループ内から呼ばれるかどうかは、Lambdaは知らない。
+        // メソッドだから、returnは使える。
+        //
+        // break;を本気で実現するなら、Exceptionをthrowする。
+        // (ちょこっとライブコーディング)
+        // ただ、Exceptionを分岐の手段にするのも、あまり良いやり方とは言えないのでアクロバティック。
+        // Exceptionのnewは少し(比較的)重いというのもある。
+
+        final StringBuilder sea = new StringBuilder();
+        // ここ (test_メソッドの世界)
         stageList.forEach(stage -> {
-            if (sea.toString().contains("ga")){
+            // ここ (Abcクラスの世界)
+            // #1on1: これを思いつけたの、俺ってすごいって書いてもいいくらい (2026/08/21)
+            // foundGaを使わずに実現できてるので素晴らしい。
+            // (補足: もしcontainsのコストを削減したいとなったら確かにboolean)
+            // (補足: もしtoString()のコストを削減したいなったらindexOf()を使う)
+            // TODO takahara さすがにnew String()100万回はあれなのでindexOf()を使ってみて by jflute (2026/08/21)
+            if (sea.toString().contains("ga")) {
                 return;
             }
             if (stage.startsWith("br")) {
@@ -308,10 +342,41 @@ public class Step02IfForTest extends PlainTestCase {
             // ↓↓↓本当は sea = stage と書きたかったのですが「ラムダ式で使用される変数は final または実質的に final でなければなりません」というエラーが出たため、
             // 長さを0にする→長さ0の文字列の末尾にstageを加える、というアクロバティックなことをしています😌
             // もう少しスマートな書き方があるはず、とは思っています🤔
+            // #1on1: まあすでに無茶なエクササイズで、StringBuilderをトリッキーに使っているので... (2026/08/21)
+            // スマートは仕方ない。せめて、clear()とかclearAndAppend()とかればいいのになとは思うけど...
+            // StringBuilderはそういう目的のクラスじゃないのでOK。
             sea.setLength(0);
             sea.append(stage);
         });
         log(sea); // should be same as before-fix
+
+        // #1on1: 拡張for文とforEach()メソッドの使い分け(メリデメ)は？ (2026/08/21)
+        // 拡張for文         : 制限が少なくなんでもできる
+        // forEach()メソッド : 制限が多く、やれることが少ない
+        //
+        // mutable: 制限が少なく色々と変更ができる
+        // immutable: 制限が多く、変更ができない
+        //
+        // 外側の変数を書き換えない場面やcontinue;break;などしない場面では、
+        // 適材適所でforEach()メソッドを使った方が、安全で読みやすい。
+        //
+        // いんとあいのfor文: 1995年 (当初から)
+        // 拡張for文 (foreach文): 2005年くらい
+        // forEach()メソッド: 2015年くらい // 使えないものだったらわざわざ出てこない
+        //
+        // 業務のwebアプリだとシンプルループが多いので、forEach()メソッドがフィットする。
+        //
+        // 制限ってパッと聞くと負のイメージになるけど、制限で得られるものがある。
+        // いかにぼくらは制限デザインをうまくやるか？
+        //
+        // 一方で、適材適所すぎるのもつらい。
+        // o 学習コスト
+        // o 判断コスト
+        // (選択肢が多いというのは、実は判断コストが掛かる)
+        // (特に何度も繰り返すものは、意外に積み上がるので、削減すると効果が高い)
+        //
+        // かつ、選択肢が多いということは、人によって書き方が変わるということでもある。
+        // すると、統一性から得られる可読性は得られない。
     }
 
     /**
@@ -330,11 +395,11 @@ public class Step02IfForTest extends PlainTestCase {
         List<Character> alphabetList = new ArrayList<>();
         char alphabet = 'a';
 
-        for (int i=0; i<26; i++){
-            alphabetList.add((char)(alphabet+i));
+        for (int i = 0; i < 26; i++) {
+            alphabetList.add((char) (alphabet + i));
         }
 
-        for(int j=25; j>=0; j=j-2){
+        for (int j = 25; j >= 0; j = j - 2) {
             log(alphabetList.get(j));
         }
     }

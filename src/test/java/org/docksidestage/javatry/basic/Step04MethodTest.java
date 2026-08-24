@@ -35,15 +35,16 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_call_basic() {
         String sea = supplySomething();
-        log(sea); // your answer? =>
+        log(sea); // your answer? => over
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
-        String sea = functionSomething("mystic");
-        consumeSomething(supplySomething());
-        runnableSomething();
-        log(sea); // your answer? => 
+        String sea = functionSomething("mystic"); // mysmys
+        consumeSomething(supplySomething()); // takahara: consumeSomething("over")が実行されるが、
+        // consumeSomethingでは、immutableな変数をreplaceするだけなのでseaの値はそのまま変わらない
+        runnableSomething(); // takahara: 中で同名の変数を定義しているがreturnされるわけではなく、こっちでそれを受け取っているわけでもないのでseaはそのまま
+        log(sea); // your answer? => mysmys
     }
 
     private String functionSomething(String name) {
@@ -72,11 +73,11 @@ public class Step04MethodTest extends PlainTestCase {
         St4MutableStage mutable = new St4MutableStage();
         int sea = 904;
         boolean land = false;
-        helloMutable(sea - 4, land, mutable);
+        helloMutable(sea - 4, land, mutable); // seaとlandの値は変化しない。mutableのstageNameが"mystic"になる
         if (!land) {
-            sea = sea + mutable.getStageName().length();
+            sea = sea + mutable.getStageName().length(); // 910
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 910
     }
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
@@ -106,16 +107,17 @@ public class Step04MethodTest extends PlainTestCase {
     private boolean hasAnnualPassport;
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
+    // TODO jflute noniwa ここまでやりました！🙇 by takahara
     public void test_method_instanceVariable() {
         hasAnnualPassport = true;
         int sea = inParkCount;
-        offAnnualPassport(hasAnnualPassport);
-        for (int i = 0; i < 100; i++) {
+        offAnnualPassport(hasAnnualPassport); // hasAnnualPassportがfalseにはならない
+        for (int i = 0; i < 100; i++) { // inParkCountが100までプラスされる
             goToPark();
         }
         ++sea;
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100
     }
 
     private void offAnnualPassport(boolean hasAnnualPassport) {

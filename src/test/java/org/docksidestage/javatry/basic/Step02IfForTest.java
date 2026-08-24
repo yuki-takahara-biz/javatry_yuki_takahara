@@ -332,8 +332,11 @@ public class Step02IfForTest extends PlainTestCase {
             // foundGaを使わずに実現できてるので素晴らしい。
             // (補足: もしcontainsのコストを削減したいとなったら確かにboolean)
             // (補足: もしtoString()のコストを削減したいなったらindexOf()を使う)
-            // TODO takahara さすがにnew String()100万回はあれなのでindexOf()を使ってみて by jflute (2026/08/21)
-            if (sea.toString().contains("ga")) {
+            // done takahara さすがにnew String()100万回はあれなのでindexOf()を使ってみて by jflute (2026/08/21)
+            // TODO jflute indexOfを使用してみました！文字列が含まれていない時は-1を返すような仕様だったので、
+            //  そうでない時→含まれている時という条件処理です！ by takahara
+            //if (sea.toString().contains("ga")) {
+            if (sea.indexOf("ga") != -1) {
                 return;
             }
             if (stage.startsWith("br")) {

@@ -45,6 +45,7 @@ public class Step04MethodTest extends PlainTestCase {
         // consumeSomethingでは、immutableな変数をreplaceするだけなのでseaの値はそのまま変わらない
         runnableSomething(); // takahara: 中で同名の変数を定義しているがreturnされるわけではなく、こっちでそれを受け取っているわけでもないのでseaはそのまま
         log(sea); // your answer? => mysmys
+        // TODO takahara コメントの理解も含めてgood by noniwa
     }
 
     private String functionSomething(String name) {
@@ -78,6 +79,8 @@ public class Step04MethodTest extends PlainTestCase {
             sea = sea + mutable.getStageName().length(); // 910
         }
         log(sea); // your answer? => 910
+        // TODO takahara Javaでは全て値渡し。引数がprimitiveの時は値がコピーされ、objectはアドレスがコピーされる。
+        //  そのため、メソッド実行後もobjectへの変更が反映される(副作用を持つことができる) by noniwa
     }
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
@@ -118,6 +121,8 @@ public class Step04MethodTest extends PlainTestCase {
         ++sea;
         sea = inParkCount;
         log(sea); // your answer? => 100
+        // TODO takahara Javaはprimitive変数の初期化をしていない場合、デフォルトの値を暗黙的に入れてくれるみたいですね。
+        //  inParkCountは暗黙的に0で初期化されているので、常に100が出力される。 by noniwa
     }
 
     private void offAnnualPassport(boolean hasAnnualPassport) {

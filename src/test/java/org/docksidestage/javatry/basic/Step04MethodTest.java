@@ -48,6 +48,9 @@ public class Step04MethodTest extends PlainTestCase {
         // TODO takahara コメントの理解も含めてgood by noniwa
     }
 
+    // #1on1: Functionalインターフェースの名前と合わせている (2026/09/04)
+    // Function, Supplier, Consumer: step8で登場します。
+    // step2で Consumer は登場した。forEach()メソッドの引数の型。
     private String functionSomething(String name) {
         String replaced = name.replace("tic", "mys");
         log("in function: {}", replaced);
@@ -64,6 +67,8 @@ public class Step04MethodTest extends PlainTestCase {
         log("in consume: {}", sea.replace("over", "mystic"));
     }
 
+    // #1on1; Runnableインターフェースは、引数/戻り値なしでちょうど良かったので... (2026/09/04)
+    // Functionalインターフェースに当てはめられた。(元々は別の目的で作られたもの) 
     private void runnableSomething() {
         String sea = "outofshadow";
         log("in runnable: {}", sea);
@@ -81,6 +86,39 @@ public class Step04MethodTest extends PlainTestCase {
         log(sea); // your answer? => 910
         // TODO takahara Javaでは全て値渡し。引数がprimitiveの時は値がコピーされ、objectはアドレスがコピーされる。
         //  そのため、メソッド実行後もobjectへの変更が反映される(副作用を持つことができる) by noniwa
+
+        // #1on1: 値渡しと参照渡し (2026/09/04)
+        // イメージは？
+        // $値渡し: 引数で渡しても、戻り値で受け取ったりしない限り呼び出し側に影響しない by たかはらさん
+        // $参照渡し: ...で影響する
+        // たかはらさんのイメージと実際に起きていることがちょっと違うかも？
+        //
+        // 本来の意味:
+        // o 値渡し: 値を渡している
+        //   (値とは？ → 変数の中身: int型とかなら7とかそのもの、オブジェクト型ならアドレス)
+        //   (変数の中身(値)を渡してるから値渡し) // アドレスを渡してるからといって参照渡しというわけではない
+        // o 参照渡し: (変数への)参照を渡している
+        //   (参照とは？ → インスタンスのアドレスじゃなく変数のアドレスみたいなイメージ)
+        //
+        // なので高原さんのイメージの "呼び出し側に影響しない" は、
+        // "呼び出し側の変数に影響しない" であれば、本来の意味合いの値渡し。
+        // 
+        // 参照の値渡しとは？
+        // 「インスタンスへの参照(アドレス)を値として解釈して渡す値渡し」
+        //
+        // 参照と言う言葉をインスタンスへの参照と捉えて、
+        // 参照渡しという言葉を使ってしまうケースもある。
+        // (昨今のよく使われてる言語だと、本来の意味合いの参照渡しがあまりないので...
+        // なので身近で直感的な解釈が広まって行きやすいのかなと)
+        //
+        // jfluteは、長らく怪しい言葉だなと思って近寄ってなかったけど...
+        // 新卒のみなさんが色々バラバラに学んでるので、気になって調べてみた。
+        // 今後も、あまり積極的には使わないかも。
+        //
+        // 言葉って気をつけないといけない。(時々、こういう言葉もある)
+        //
+        // 副作用と言った時も、インスタンスへの副作用なのか？変数への副作用なのか？
+        // の違いもある。
     }
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
@@ -110,7 +148,7 @@ public class Step04MethodTest extends PlainTestCase {
     private boolean hasAnnualPassport;
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
-    // TODO jflute noniwa ここまでやりました！🙇 by takahara
+    // done jflute noniwa ここまでやりました！🙇 by takahara
     public void test_method_instanceVariable() {
         hasAnnualPassport = true;
         int sea = inParkCount;
@@ -135,6 +173,7 @@ public class Step04MethodTest extends PlainTestCase {
         }
     }
 
+    // TODO jflute 次回1on1ここから (2026/09/04)
     // ===================================================================================
     //                                                                           Challenge
     //                                                                           =========

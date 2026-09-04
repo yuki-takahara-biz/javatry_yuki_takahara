@@ -40,6 +40,14 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_basicType() {
         String sea = "mystic";
         Integer land = 416;
+        // #1on1: 日付型の言葉のお話 (2026/09/04)
+        // o 日付: yyyy/MM/dd (時分秒は含まない) // Date
+        // o 日時: yyyy/MM/dd HH:mm:ss.SSS... // DateTime
+        // 歴史的には、必ずしもこうならないこともあって...
+        // java.util.Date: 1970年からの相対ミリ秒 → つまり時分秒を持っている
+        // 抽象的な意味合いのDateという感じで使われることもあるので注意。
+        // 相対ミリ秒自体はJava固有のものではなく、UNIX時間。
+        // java.util.Date は、実装上の都合も色々あって置き換えられた。
         LocalDate piari = LocalDate.of(2001, 9, 4);
         LocalDateTime bonvo = LocalDateTime.of(2001, 9, 4, 12, 34, 56);
         Boolean dstore = true;
@@ -85,6 +93,9 @@ public class Step03DataTypeTest extends PlainTestCase {
             sea = 0;
         }
         log(sea); // your answer? => 2
+
+        // #1on1: 教訓:言語の細かい挙動を知らないと読めないプログラムを極力書かない (2026/09/04)
+        // 一度、ややこしいのを経験しておく思い出が大事。
     }
 
     // ===================================================================================
@@ -99,6 +110,7 @@ public class Step03DataTypeTest extends PlainTestCase {
 
     private static class St3ImmutableStage {
 
+        // #1on1: インスタンス変数には極力finalをつけよう話 (2026/09/04)
         private final String stageName;
 
         public St3ImmutableStage(String stageName) {

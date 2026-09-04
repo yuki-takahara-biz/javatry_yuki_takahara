@@ -333,7 +333,7 @@ public class Step02IfForTest extends PlainTestCase {
             // (補足: もしcontainsのコストを削減したいとなったら確かにboolean)
             // (補足: もしtoString()のコストを削減したいなったらindexOf()を使う)
             // done takahara さすがにnew String()100万回はあれなのでindexOf()を使ってみて by jflute (2026/08/21)
-            // TODO jflute indexOfを使用してみました！文字列が含まれていない時は-1を返すような仕様だったので、
+            // done jflute indexOfを使用してみました！文字列が含まれていない時は-1を返すような仕様だったので、
             //  そうでない時→含まれている時という条件処理です！ by takahara
             //if (sea.toString().contains("ga")) {
             if (sea.indexOf("ga") != -1) {

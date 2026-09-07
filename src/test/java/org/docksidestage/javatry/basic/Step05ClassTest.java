@@ -43,7 +43,7 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
         int sea = booth.getQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -51,20 +51,22 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10000 (初回購入時はsalesProceedsがnullなのでsalesProcesds = handedMoney)
+        // （注）後のエクササイズでTicketBooth.javaを修正したため現在は7400になります
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_nosales() {
         TicketBooth booth = new TicketBooth();
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null (初期値のままだから)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_wrongQuantity() {
         Integer sea = doTest_class_ticket_wrongQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9 (quantityが0でない時は常にquantityが-1される)
+        // （注）後のエクササイズでTicketBooth.javaを修正したため現在は10になります
     }
 
     private Integer doTest_class_ticket_wrongQuantity() {
@@ -89,6 +91,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_letsFix_ticketQuantityReduction() {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
+        // src/main/java/org/docksidestage/bizfw/basic/buyticket/TicketBooth.java の「--quantity」の場所を移動しました
     }
 
     /**
@@ -100,6 +103,7 @@ public class Step05ClassTest extends PlainTestCase {
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
+        // TicketBooth.javaについて、handesmoneyを足すのではなく、ONE_DAY_PRICEを足すようにしました
     }
 
     /**
@@ -108,13 +112,15 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        int change = booth.buyTwoDayPassport(money);
+        Integer sea = booth.getSalesProceeds() + change;
+        log(sea); // should be same as money
 
         // and show two-day passport quantity here
+        int quantity = booth.getQuantity();
+        log(quantity);
     }
 
     /**
@@ -126,6 +132,8 @@ public class Step05ClassTest extends PlainTestCase {
         booth.buyOneDayPassport(10000);
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
     }
+
+    // TODO jflute noniwa ここまでやりました🙇
 
     // ===================================================================================
     //                                                                           Challenge

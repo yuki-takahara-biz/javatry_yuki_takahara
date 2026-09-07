@@ -203,12 +203,31 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_making() {
         // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC"));
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea);
+        }
     }
 
     // write methods here
+    public String replaceAwithB(String s){
+        return s.replace("A", "B");
+    }
+
+    public String replaceCwithB(String s){
+        return s.replace("C", "B");
+    }
+
+    public String quote(String s1, String s2){
+        return s2 + s1 + s2;
+    }
+
+    private boolean availableLogging  = true;
+    public boolean isAvailableLogging(){
+        return availableLogging;
+    }
+    public void showSea(String sea){
+        log(sea);
+    }
 }

@@ -178,7 +178,7 @@ public class Step04MethodTest extends PlainTestCase {
     // 優れた人は基礎がしっかりしてる人が多い印象。
     // 基礎がしっかりしてない人は不安定な印象。
 
-    // TODO jflute 次回1on1ここから (2026/09/04)
+    // done jflute 次回1on1ここから (2026/09/04)
     // ===================================================================================
     //                                                                           Challenge
     //                                                                           =========
@@ -204,30 +204,79 @@ public class Step04MethodTest extends PlainTestCase {
     public void test_method_making() {
         // use after making these methods
         String replaced = replaceCwithB(replaceAwithB("ABC"));
+        land();
         String sea = quote(replaced, "'");
         if (isAvailableLogging()) {
             showSea(sea);
         }
     }
 
+    // #1on1: いいね、メソッドの定義順序が呼び出し順序と一致していて直感的に把握しやすくて良い (2026/09/18)
+    // なんだかんだ、絵的な直感性に頼って記憶したり理解したりもするので、そこに情報があると嬉しい by jflute
+    // $自分もわかりやすいと思っている by たかはらさん
+    // 絶対的に正解があるわけじゃないけど、何かしらのルールがあった方がわかりやすいと感じる。
+    // その手法の一つとして、呼び出し順序に合わせる、がある。
+    // (他だと、アルファベット順？でも業務的には意味がない...でもバラバラよりはマシ？)
+    //
+    // ソースコードの空間そのものを把握して脳裏に焼き付けたい、というのがある by jflute
+    // 呼び出し順序と一緒にメソッドのそのものの概念も焼き付けたら記憶に留まりやすい。
+    // メソッド間の関係性も焼き付けやすい。
+    //
+    // 一方で、まとまりを優先するのか？呼び出し順序を優先するのか？
+    // まとまりの存在感次第。そのまとまりだけでまとめて見たいことがありそうかどうか？ by jflute
+    // (そのprivateメソッドの独立性がどれだけあるか？呼び出し側に従属した概念なのか？)
+    //
+    // 実際は、コードの階層構造を意識して、まとまり方式と呼び出し順序方式をハイブリッドでやる。
+    // LastaFlute の ActionRequestProcessor のコードを参考に。
+    //
+    // 既存コードの修正、一番下に追加されやすい問題:
+    // みんなが少しずつぐちゃを入れていって、最終的にぐちゃぐちゃ。
+    // これは解決し難い問題で、悲しい問題。
+    // おじゃまします感があるから。
+    // 会社のコードは誰のもの？かと言ったら、会社のもの。
+    // そのコードに対する責任は、みんな均等にある。なんなら今そのチームの人が責任がある。
+    // 最初に作った人はもういないかもしれない。その人に遠慮しても責任は回らない。
+    // なので、コード修正する人が、既存クラスの「コード体裁デザイン」に責任を持たないといけない。
+    // 既存のクラスの「コード体裁デザイン」を把握して合わせて修正をして欲しい。
+    // なので遠慮してる場合ではない。
+    // それをみんながやらないと、みんなが少しずつ無責任になって、無責任なクラスができあがる。
+    //
+    // 割れ窓理論とは？最初の人たちが悪い？でも後の人たちも褒められものじゃない。
+    //
+    // タグコメントの効能。レールを敷いている。
+    //
+    // (AIが読むにしても、読みやすいコードの方がAIも嬉しいはず!?)
+
     // write methods here
-    public String replaceAwithB(String s){
+    public String replaceAwithB(String s) {
         return s.replace("A", "B");
     }
 
-    public String replaceCwithB(String s){
+    public String replaceCwithB(String s) {
         return s.replace("C", "B");
     }
 
-    public String quote(String s1, String s2){
+    // TODO takahara 第二引数の引数名、もうちょいどうにかわかるようにしたいところ by jflute (2026/09/18)
+    // 呼び出し側からしたら、どっちが引用符？ってのがパッと見わからない。メソッド補完時とか。
+    // なので、普通のローカル変数よりも、引数変数の方が、名前が大事。
+    // 引数変数名は、呼び手に対するインターフェース (ドキュメント) でもある。
+    // もちろん、両方ともこだわるけど、引数変数はよりこだわる。
+    // #1on1: 一方で、(他のメソッドも同じく)第一引数は業務的な意味を持ってないのでシンプルでOK (2026/09/18)
+    // もちろん、引数が複数あるときは、第一引数も区別にために付けたいところだけど、まあわかるって感じであれば。
+    public String quote(String s1, String s2) {
         return s2 + s1 + s2;
     }
 
-    private boolean availableLogging  = true;
-    public boolean isAvailableLogging(){
+    private boolean availableLogging = true;
+
+    public boolean isAvailableLogging() {
         return availableLogging;
     }
-    public void showSea(String sea){
+
+    public void showSea(String sea) {
         log(sea);
+    }
+
+    private void land() {
     }
 }

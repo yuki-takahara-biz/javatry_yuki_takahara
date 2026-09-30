@@ -25,12 +25,26 @@ public class Ticket {
     //                                                                           =========
     private final int displayPrice; // written on ticket, park guest can watch this
     private boolean alreadyIn; // true means this ticket is unavailable
+    // 残りの入場回数
+    private int remainingEntranceCount;
+    // 値段ごとに残りの入場回数を場合分け（TicketBooth.javaにも同様の内容があるので統一するべきかもしれない）
+    private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
     public Ticket(int displayPrice) {
+
         this.displayPrice = displayPrice;
+        if (displayPrice == ONE_DAY_PRICE){
+            remainingEntranceCount = 1;
+        }else if (displayPrice == TWO_DAY_PRICE){
+            remainingEntranceCount = 2;
+        }else if (displayPrice == FOUR_DAY_PRICE){
+            remainingEntranceCount = 4;
+        }
     }
 
     // ===================================================================================
@@ -39,8 +53,12 @@ public class Ticket {
     public void doInPark() {
         if (alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
+        }else{
+            remainingEntranceCount--;
+            if (remainingEntranceCount == 0){
+                alreadyIn = true;
+            }
         }
-        alreadyIn = true;
     }
 
     // ===================================================================================

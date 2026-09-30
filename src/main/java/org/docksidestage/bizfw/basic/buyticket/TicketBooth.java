@@ -26,6 +26,7 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -56,7 +57,8 @@ public class TicketBooth {
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
-    public void buyOneDayPassport(Integer handedMoney) {
+    // 返り値の型をTicketにした
+    public Ticket buyOneDayPassport(Integer handedMoney) {
         checkQuantity(); // test_class_letsFix_refactor_recycleで修正
         if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
@@ -67,9 +69,11 @@ public class TicketBooth {
         } else { // first purchase
             salesProceeds = ONE_DAY_PRICE;
         }
+        // Ticketを返すようにする
+        return new Ticket(handedMoney);
     }
 
-    public int buyTwoDayPassport(Integer handedMoney){
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney){
         checkQuantity();
         if (handedMoney < TWO_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
@@ -80,7 +84,21 @@ public class TicketBooth {
         } else { // first purchase
             salesProceeds = TWO_DAY_PRICE;
         }
-        return handedMoney - TWO_DAY_PRICE;
+        return new TicketBuyResult(TWO_DAY_PRICE, handedMoney);
+    }
+
+    public TicketBuyResult buyFourDayPassport(Integer handedMoney){
+        checkQuantity();
+        if (handedMoney < FOUR_DAY_PRICE) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+        --quantity;
+        if (salesProceeds != null) { // second or more purchase
+            salesProceeds = salesProceeds + FOUR_DAY_PRICE;
+        } else { // first purchase
+            salesProceeds = FOUR_DAY_PRICE;
+        }
+        return new TicketBuyResult(FOUR_DAY_PRICE, handedMoney);
     }
 
     // test_class_letsFix_refactor_recycleで追加したメソッド

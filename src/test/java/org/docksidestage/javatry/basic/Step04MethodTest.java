@@ -45,7 +45,7 @@ public class Step04MethodTest extends PlainTestCase {
         // consumeSomethingでは、immutableな変数をreplaceするだけなのでseaの値はそのまま変わらない
         runnableSomething(); // takahara: 中で同名の変数を定義しているがreturnされるわけではなく、こっちでそれを受け取っているわけでもないのでseaはそのまま
         log(sea); // your answer? => mysmys
-        // TODO takahara コメントの理解も含めてgood by noniwa
+        // done takahara コメントの理解も含めてgood by noniwa
     }
 
     // #1on1: Functionalインターフェースの名前と合わせている (2026/09/04)
@@ -84,7 +84,7 @@ public class Step04MethodTest extends PlainTestCase {
             sea = sea + mutable.getStageName().length(); // 910
         }
         log(sea); // your answer? => 910
-        // TODO takahara Javaでは全て値渡し。引数がprimitiveの時は値がコピーされ、objectはアドレスがコピーされる。
+        // done takahara Javaでは全て値渡し。引数がprimitiveの時は値がコピーされ、objectはアドレスがコピーされる。
         //  そのため、メソッド実行後もobjectへの変更が反映される(副作用を持つことができる) by noniwa
 
         // #1on1: 値渡しと参照渡し (2026/09/04)
@@ -256,7 +256,7 @@ public class Step04MethodTest extends PlainTestCase {
         return s.replace("C", "B");
     }
 
-    // TODO takahara 第二引数の引数名、もうちょいどうにかわかるようにしたいところ by jflute (2026/09/18)
+    // done takahara 第二引数の引数名、もうちょいどうにかわかるようにしたいところ by jflute (2026/09/18)
     // 呼び出し側からしたら、どっちが引用符？ってのがパッと見わからない。メソッド補完時とか。
     // なので、普通のローカル変数よりも、引数変数の方が、名前が大事。
     // 引数変数名は、呼び手に対するインターフェース (ドキュメント) でもある。

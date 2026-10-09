@@ -110,6 +110,24 @@ public class Step05ClassTest extends PlainTestCase {
         log(sea); // should be same as one-day price, visual check here
         // TicketBooth.javaについて、handesmoneyを足すのではなく、ONE_DAY_PRICEを足すようにしました
     }
+    // #1on1: バグの種類 (2026/10/09)
+    //
+    // o お金不足でもチケットが減る問題: 複数行の流れのバグ
+    //  → ちゃんと業務的な流れをみていないと気づかない
+    //  → しかも、異常ケースが発生しないと、バグが顕在化しないので、テストでも見つけづらい
+    //  → 実務だと、もっと複雑な構造になってたりで、流れがわかりにくくなってる可能性も
+    //
+    // o 受け取ったお金の分だけ売上が増えていく問題: 単行のロジックのバグ
+    //  → まあまあ見つけやすい、一行だけフォーカスして見ればああって気づきやすい
+    //
+    // 流れのバグの方は、なかなかやっかい。意識してないとスルーしがち。
+    // 実装者としては、流れのバグがないかを自己レビューでしっかり。
+    // レビューワーとしては、流れのバグがないかを意識してコードを見てあげる。(業務理解も必要)
+    //
+    //
+    // 一方で、単行でも変数名次第ではわかりにくいバグになることも。
+    // もし、handedMoney が money だったら...見つけにくくなる。
+    // そう考えると、変数名って大事。変数名次第で、バグの見つけやすさが変わる。
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
@@ -117,15 +135,15 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-//        TicketBooth booth = new TicketBooth();
-//        int money = 14000;
-//        int change = booth.buyTwoDayPassport(money);
-//        Integer sea = booth.getSalesProceeds() + change;
-//        log(sea); // should be same as money
-//
-//        // and show two-day passport quantity here
-//        int quantity = booth.getQuantity();
-//        log(quantity);
+        //        TicketBooth booth = new TicketBooth();
+        //        int money = 14000;
+        //        int change = booth.buyTwoDayPassport(money);
+        //        Integer sea = booth.getSalesProceeds() + change;
+        //        log(sea); // should be same as money
+        //
+        //        // and show two-day passport quantity here
+        //        int quantity = booth.getQuantity();
+        //        log(quantity);
     }
 
     /**
@@ -138,7 +156,9 @@ public class Step05ClassTest extends PlainTestCase {
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
     }
 
-    // TODO jfulte noniwa 以下からチェックをお願いします🙇
+    // done jfulte noniwa 以下からチェックをお願いします🙇
+    // 一応、フルートという単語 flute
+    // Eclipseをひたすら吹いていた。
 
     // ===================================================================================
     //                                                                           Challenge
@@ -208,6 +228,7 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
+        // TODO takahara 金額判定はヤバイ by jflute (2026/10/09)
         final int TWO_DAY_PRICE = 13200;
         if (ticket.getDisplayPrice() == TWO_DAY_PRICE) { // write determination for two-day passport
             log("two-day passport");
@@ -230,9 +251,9 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBuyResult buyResult = booth.buyFourDayPassport(handedMoney);
         Ticket fourDayPassport = buyResult.getTicket();
         // 1回目の使用
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             fourDayPassport.doInPark();
-            log((i+1) + "回目の入場完了");
+            log((i + 1) + "回目の入場完了");
         }
         // ここでIllegalStateExeptionが出てくるはず
         fourDayPassport.doInPark();

@@ -27,6 +27,8 @@ public class Ticket {
     private boolean alreadyIn; // true means this ticket is unavailable
     // 残りの入場回数
     private int remainingEntranceCount;
+
+    // TODO takahara 統一は置いておくとして、定義位置、staticのものはクラスの一番上が慣習 by jflute (2026/10/09)
     // 値段ごとに残りの入場回数を場合分け（TicketBooth.javaにも同様の内容があるので統一するべきかもしれない）
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
@@ -38,11 +40,14 @@ public class Ticket {
     public Ticket(int displayPrice) {
 
         this.displayPrice = displayPrice;
-        if (displayPrice == ONE_DAY_PRICE){
+
+        // TODO takahara パスポートの種類が増えた時、TicketBoothだけじゃなくここも修正忘れないように... by jflute (2026/10/09)
+        // というのをやめたい。Ticketクラスでは、パスポートの種類に依存した処理は入れないようにしたい。TicketBoothで完結したい。
+        if (displayPrice == ONE_DAY_PRICE) {
             remainingEntranceCount = 1;
-        }else if (displayPrice == TWO_DAY_PRICE){
+        } else if (displayPrice == TWO_DAY_PRICE) {
             remainingEntranceCount = 2;
-        }else if (displayPrice == FOUR_DAY_PRICE){
+        } else if (displayPrice == FOUR_DAY_PRICE) {
             remainingEntranceCount = 4;
         }
     }
@@ -53,9 +58,9 @@ public class Ticket {
     public void doInPark() {
         if (alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
-        }else{
+        } else {
             remainingEntranceCount--;
-            if (remainingEntranceCount == 0){
+            if (remainingEntranceCount == 0) {
                 alreadyIn = true;
             }
         }

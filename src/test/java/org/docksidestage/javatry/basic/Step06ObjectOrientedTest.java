@@ -234,6 +234,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         return new Dog();
     }
 
+    // TODO jflute step5のTicketBuyResultで、newが一箇所の方が良い話をしている。 (2026/10/09)
+    // なので、step6のここに来た時にその続きのフォローをする。
+
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_4th_toMethod() {
         Dog dog = new Dog();

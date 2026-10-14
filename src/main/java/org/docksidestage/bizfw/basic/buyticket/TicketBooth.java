@@ -15,9 +15,9 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
-// TODO takahara JavaDocコメント、せっかくなのでauthorを追加しましょう by jflute (2026/10/09)
+// done takahara JavaDocコメント、せっかくなのでauthorを追加しましょう by jflute (2026/10/09)
 /**
- * @author jflute
+ * @author jflute, takahara
  */
 public class TicketBooth {
 
@@ -28,12 +28,14 @@ public class TicketBooth {
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
     private static final int FOUR_DAY_PRICE = 22400;
+    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
     private int quantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
+    private int price;
 
     // ===================================================================================
     //                                                                         Constructor
@@ -52,56 +54,51 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
-    // TODO takahara 戻り値を追加したので、JavaDocにも追加しましょう by jflute (2026/10/09)
+    // done takahara 戻り値を追加したので、JavaDocにも追加しましょう by jflute (2026/10/09)
+    // TODO jflute JavaDocを書きました！
     // (日本語でOK)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @param originalEntranceCount 何日利用できるチケットか
+     * @param ticketType 一日中使用できる場合はallDay、夜のみ使用できる場合はnightOnly
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
-    // 返り値の型をTicketにした
-    public Ticket buyOneDayPassport(Integer handedMoney) {
-        checkQuantity(); // test_class_letsFix_refactor_recycleで修正
-        if (handedMoney < ONE_DAY_PRICE) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
+    public TicketBuyResult buyPassport(int handedMoney, int originalEntranceCount, String ticketType){
+        isQuantityEnough();
+        isHandedMoneyEnough(handedMoney, originalEntranceCount, ticketType);
+        calculatePrice(originalEntranceCount, ticketType);
+
+        --quantity;
+        if (salesProceeds != null){
+            salesProceeds += price;
+        }else{
+            salesProceeds = price;
         }
-        --quantity; // 場所を移動した
-        if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + ONE_DAY_PRICE;
-        } else { // first purchase
-            salesProceeds = ONE_DAY_PRICE;
-        }
-        // Ticketを返すようにする
-        return new Ticket(handedMoney);
+        return new TicketBuyResult(price, handedMoney, originalEntranceCount, ticketType);
     }
 
-    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        checkQuantity();
-        if (handedMoney < TWO_DAY_PRICE) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
+    // TODO jflute "入場回数"と"一日/夜のみ"の情報からpriceを導出するメソッドを定義しました
+    /**
+     * "入場回数"と"一日/夜のみ"の情報からpriceを導出するメソッド
+     * @param originalEntranceCount 入場回数
+     * @param ticketType "一日/夜のみ"の情報
+     */
+    private void calculatePrice(int originalEntranceCount, String ticketType){
+        if (ticketType.equals("allDay")){
+            if (originalEntranceCount == 1){
+                price = ONE_DAY_PRICE;
+            }else if (originalEntranceCount == 2){
+                price = TWO_DAY_PRICE;
+            }else if (originalEntranceCount == 4){
+                price = FOUR_DAY_PRICE;
+            }
+        }else if (ticketType.equals("nightOnly")){
+            if (originalEntranceCount == 2){
+                price = NIGHT_ONLY_TWO_DAY_PRICE;
+            }
         }
-        --quantity;
-        if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + TWO_DAY_PRICE;
-        } else { // first purchase
-            salesProceeds = TWO_DAY_PRICE;
-        }
-        return new TicketBuyResult(TWO_DAY_PRICE, handedMoney);
-    }
-
-    public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        checkQuantity();
-        if (handedMoney < FOUR_DAY_PRICE) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
-        --quantity;
-        if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + FOUR_DAY_PRICE;
-        } else { // first purchase
-            salesProceeds = FOUR_DAY_PRICE;
-        }
-        return new TicketBuyResult(FOUR_DAY_PRICE, handedMoney);
     }
 
     // test_class_letsFix_refactor_recycleで追加したメソッド
@@ -126,10 +123,37 @@ public class TicketBooth {
     // 確かに、在庫のチェック、これ以上増える可能性があるかと言ったらかなり少ない。
     // なので、その考え方もとても良いと思う。
     //
-    // TODO takahara ということで、↑を踏まえてメソッド名を変えてみましょう by jflute (2026/10/09)
-    public void checkQuantity() {
+    // done takahara ということで、↑を踏まえてメソッド名を変えてみましょう by jflute (2026/10/09)
+    // TODO jflute 関数名をcheckQuantityから修正しました！
+    /**
+     * チケットの数量が十分かどうかを確かめるメソッド。
+     */
+    private void isQuantityEnough() {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
+        }
+    }
+
+    // TODO flute handedMoneyが買いたいチケットに対して十分かどうかを判別する関数を追加しました！
+    /**
+     * Buy one-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @param originalEntranceCount 何日利用できるチケットか
+     * @param ticketType 一日中使用できる場合はallDay、夜のみ使用できる場合はnightOnly
+     */
+    private void isHandedMoneyEnough(int handedMoney, int originalEntranceCount, String ticketType){
+        if (ticketType.equals("allDay")){
+            if (originalEntranceCount == 1 && handedMoney < ONE_DAY_PRICE){
+                throw new TicketShortMoneyException("Short Money");
+            }else if (originalEntranceCount == 2 && handedMoney < TWO_DAY_PRICE){
+                throw new TicketShortMoneyException("Short Money");
+            }else if (originalEntranceCount == 3 && handedMoney < FOUR_DAY_PRICE){
+                throw new TicketShortMoneyException("Short Money");
+            }
+        }else if (ticketType.equals("nightOnly")){
+            if (originalEntranceCount == 2 && handedMoney < NIGHT_ONLY_TWO_DAY_PRICE){
+                throw new TicketShortMoneyException("Short Money");
+            }
         }
     }
 
@@ -154,10 +178,18 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    /**
+     * チケットの量を返すメソッド。
+     * @return quantity チケットの量
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * 何円の利益を得たかを返すメソッド。
+     * @return salesProceeds 利益の総数
+     */
     public Integer getSalesProceeds() {
         return salesProceeds;
     }

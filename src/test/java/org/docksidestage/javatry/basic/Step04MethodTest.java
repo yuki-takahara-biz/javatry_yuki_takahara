@@ -159,7 +159,7 @@ public class Step04MethodTest extends PlainTestCase {
         ++sea;
         sea = inParkCount;
         log(sea); // your answer? => 100
-        // TODO takahara Javaはprimitive変数の初期化をしていない場合、デフォルトの値を暗黙的に入れてくれるみたいですね。
+        // done takahara Javaはprimitive変数の初期化をしていない場合、デフォルトの値を暗黙的に入れてくれるみたいですね。
         //  inParkCountは暗黙的に0で初期化されているので、常に100が出力される。 by noniwa
     }
 

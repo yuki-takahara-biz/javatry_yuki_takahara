@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 /**
  * @author jflute
+ * @author takahara
  */
 public class Ticket {
 
@@ -24,38 +25,41 @@ public class Ticket {
     //                                                                           Attribute
     //                                                                           =========
     private final int displayPrice; // written on ticket, park guest can watch this
-    private boolean alreadyIn; // true means this ticket is unavailable
-    // 残りの入場回数
-    private int remainingEntranceCount;
 
-    // TODO takahara 統一は置いておくとして、定義位置、staticのものはクラスの一番上が慣習 by jflute (2026/10/09)
-    // 値段ごとに残りの入場回数を場合分け（TicketBooth.javaにも同様の内容があるので統一するべきかもしれない）
-    private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
-    private static final int TWO_DAY_PRICE = 13200;
-    private static final int FOUR_DAY_PRICE = 22400;
+    private boolean alreadyIn; // true means this ticket is unavailable
+    private String ticketType; // 一日中利用可能な場合は`allDay`が入り、夜のみの場合は`nightOnly`が入るような変数を用意しました
+    private int originalEntranceCount; // 初めの入場回数を保存する
+    private int remainingEntranceCount; //残りの入場回数を減らしていく
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice) {
+    public Ticket(int displayPrice, int originalEntranceCount, String ticketType) {
 
         this.displayPrice = displayPrice;
 
-        // TODO takahara パスポートの種類が増えた時、TicketBoothだけじゃなくここも修正忘れないように... by jflute (2026/10/09)
+        // done takahara パスポートの種類が増えた時、TicketBoothだけじゃなくここも修正忘れないように... by jflute (2026/10/09)
         // というのをやめたい。Ticketクラスでは、パスポートの種類に依存した処理は入れないようにしたい。TicketBoothで完結したい。
-        if (displayPrice == ONE_DAY_PRICE) {
-            remainingEntranceCount = 1;
-        } else if (displayPrice == TWO_DAY_PRICE) {
-            remainingEntranceCount = 2;
-        } else if (displayPrice == FOUR_DAY_PRICE) {
-            remainingEntranceCount = 4;
-        }
+        // TODO jflute 元の実装ではTicketクラス内のコンストラクタで、値段で場合分けして入場可能回数を指定していましたが、それをやめて、
+        //  TicketBoothから入場回数のデフォルト値を受け取るような指定にしました。
+        this.originalEntranceCount = originalEntranceCount;
+        this.remainingEntranceCount = originalEntranceCount;
+
+        // TODO fflute TicketBoothからチケット種別（allDay: 一日中使用可能、nightOnly: 夜のみ使用可能）を受け取るようにしました。
+        this.ticketType = ticketType;
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
-    public void doInPark() {
+    /**
+     * チケットを使用して入場するためのメソッド。現在が夜であるかどうかの情報を受け取る。
+     * @param isNight 現在が夜であるかどうか
+     */
+    public void doInPark(boolean isNight) {
+        if (!isNight && ticketType.equals("nightOnly")){
+            throw new IllegalStateException("Night only ticket cannot be used now");
+        }
         if (alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         } else {
@@ -68,11 +72,30 @@ public class Ticket {
 
     // ===================================================================================
     //                                                                            Accessor
-    //                                                                            ========
-    public int getDisplayPrice() {
-        return displayPrice;
-    }
+    //                                                                        ========
+    /**
+     * チケットの値段を返すメソッド。
+     * @return displayPrice チケットの値段
+     */
+    public int getDisplayPrice() {return displayPrice;}
 
+    /**
+     * デフォルトの入場回数を返すメソッド。
+     * @return originalEntranceCount デフォルトの入場回数
+     */
+    public int getOriginalEntranceCount(){ return originalEntranceCount;};
+
+    // TODO flute ticketTypeを返すようなメソッドを追加しました
+    /**
+     * チケットのタイプ（一日中使用可能か、夜のみか）を返すメソッド。
+     * @return ticketType 一日中利用可能な場合はallDayが入り、夜のみの場合はnightOnlyが入る
+     */
+    public String getTicketType(){ return ticketType;};
+
+    /**
+     * チケットをすでに使用したかどうかを確認するメソッド。
+     * @return isAlreadyIn チケットをすでに使用したかどうか
+     */
     public boolean isAlreadyIn() {
         return alreadyIn;
     }

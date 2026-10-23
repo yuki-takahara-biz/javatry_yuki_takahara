@@ -1,6 +1,6 @@
 package org.docksidestage.bizfw.basic.buyticket;
 
-// TODO takahara JavaDocコメント、せめて1行タイトルとauthorだけでも by jflute (2026/10/09)
+// done takahara JavaDocコメント、せめて1行タイトルとauthorだけでも by jflute (2026/10/09)
 /**
  * @author takahara
  */
@@ -38,6 +38,11 @@ public class TicketBuyResult {
         // そういう概念を重視するという考え方なのであれば、逆にもっと前面に出していいかと。
     }
 
+    // TODO takahara getterメソッドの場合、説明自体はほぼ書くことがないので... by jflute (2026/10/23)
+    // 説明の方を省略しちゃってもOKです。
+    // (@returnは戻り値の説明の枠として書いておきたい。設定によっては必須だし)
+    // TODO takahara @returnは、変数名を入れる必要はないです by jflute (2026/10/23)
+    // e.g. @return 買ったチケット
     /**
      * 買ったチケットを返すメソッド
      * @return ticket 買ったチケット
@@ -51,6 +56,11 @@ public class TicketBuyResult {
      * @return change お釣り
      */
     public int getChange() {
+        // TODO takahara Constructorから抜けてきたとはいえ...Resultクラスなので... by jflute (2026/10/23)
+        // Resultだと単なる入れ物イメージなので、そもそもgetに計算は置かない方が良いかなと。
+        // もちろん、calculateChange(); という名前に変えるという選択肢もある。
+        // ただ、やはりResultなので、計算するメソッドがあること自体が合わない。
+        // (概念的な感覚で言うと、結果というオブジェクト自体は計算しない)
         return handedMoney - price;
     };
 }

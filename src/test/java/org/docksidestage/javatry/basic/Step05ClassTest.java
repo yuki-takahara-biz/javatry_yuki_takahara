@@ -305,7 +305,7 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_yourSuperJavaDoc() {
         // your confirmation code here
-        // TODO jflute 課題の内容がjavaDocの記述なので、（動作するかどうかというよりは）メソッドにカーソルを当てた時に説明が出てくるかを見ていただきたいです。
+        // done jflute 課題の内容がjavaDocの記述なので、（動作するかどうかというよりは）メソッドにカーソルを当てた時に説明が出てくるかを見ていただきたいです。
         // チケット購入→使用の流れのコードを動かしてみる
         TicketBooth booth = new TicketBooth();
         int handedMoney = 20000;

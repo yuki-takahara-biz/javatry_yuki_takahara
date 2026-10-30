@@ -6,12 +6,12 @@ package org.docksidestage.bizfw.basic.buyticket;
  */
 public class TicketBuyResult {
 
-    // done takahara handedMoney が is not used の警告が出ている by jflute (2026/10/09)
-    private final int price;
-    private final int handedMoney;
-    private final Ticket ticket;
 
-    public TicketBuyResult(int price, int handedMoney, int originalEntranceCount, String ticketType) {
+    private final Ticket ticket;
+    private final int change;
+
+    // TODO jflute TicketBuyResultは「Result」の側面を重視し、メソッドは入れずにデータの入れ物として定義するように修正しました！
+    public TicketBuyResult(int change, Ticket ticket) {
         // done takahara Constructorにロジックを入れるか？話 by jflute (2026/10/09)
         // $「お釣りを計算する」というロジックが入っている。
         // Constructorって、インスタンスを生成することが役割なので、あまりロジック入れない傾向にある。
@@ -24,9 +24,8 @@ public class TicketBuyResult {
         //
         // 小さくてもれっきとしてビジネスロジック。
         //
-        this.price = price;
-        this.handedMoney = handedMoney;
-        this.ticket = new Ticket(price, originalEntranceCount, ticketType);
+        this.change = change;
+        this.ticket = ticket;
 
         // done takahara チケットのnewがあっちらこっちらに散らばらないようにしたい by jflute (2026/10/09)
         // オブジェクト指向的な観点がわからないと難しいんですが、newは一箇所にしたい。拡張のために。
@@ -38,29 +37,25 @@ public class TicketBuyResult {
         // そういう概念を重視するという考え方なのであれば、逆にもっと前面に出していいかと。
     }
 
-    // TODO takahara getterメソッドの場合、説明自体はほぼ書くことがないので... by jflute (2026/10/23)
+    // done takahara getterメソッドの場合、説明自体はほぼ書くことがないので... by jflute (2026/10/23)
     // 説明の方を省略しちゃってもOKです。
     // (@returnは戻り値の説明の枠として書いておきたい。設定によっては必須だし)
-    // TODO takahara @returnは、変数名を入れる必要はないです by jflute (2026/10/23)
+    // done takahara @returnは、変数名を入れる必要はないです by jflute (2026/10/23)
     // e.g. @return 買ったチケット
     /**
-     * 買ったチケットを返すメソッド
-     * @return ticket 買ったチケット
+     * @return 買ったチケット
      */
     public Ticket getTicket() {
         return ticket;
     };
 
+    // done takahara Constructorから抜けてきたとはいえ...Resultクラスなので... by jflute (2026/10/23)
+    // Resultだと単なる入れ物イメージなので、そもそもgetに計算は置かない方が良いかなと。
+    // もちろん、calculateChange(); という名前に変えるという選択肢もある。
+    // ただ、やはりResultなので、計算するメソッドがあること自体が合わない。
+    // (概念的な感覚で言うと、結果というオブジェクト自体は計算しない)
     /**
-     * お釣りを返すメソッド。
-     * @return change お釣り
+     * @return お釣り
      */
-    public int getChange() {
-        // TODO takahara Constructorから抜けてきたとはいえ...Resultクラスなので... by jflute (2026/10/23)
-        // Resultだと単なる入れ物イメージなので、そもそもgetに計算は置かない方が良いかなと。
-        // もちろん、calculateChange(); という名前に変えるという選択肢もある。
-        // ただ、やはりResultなので、計算するメソッドがあること自体が合わない。
-        // (概念的な感覚で言うと、結果というオブジェクト自体は計算しない)
-        return handedMoney - price;
-    };
+    public int getChange() { return change; };
 }

@@ -25,13 +25,14 @@ public class Ticket {
     //                                                                           Attribute
     //                                                                           =========
     // #1on1: いいね、横のすらすらコメントとても良い (2026/10/23)
-    // TODO takahara originalEntranceCount, ticketType は final で immutable では by jflute (2026/10/23)
+    // TODO done takahara originalEntranceCount, ticketType は final で immutable では by jflute (2026/10/23)
+    // TODO jflute ↑対応しました！
     // そうしていくと、空行の入れる位置と変数の定義順序、ちょっと変えたくなるかもね。
     private final int displayPrice; // written on ticket, park guest can watch this
-
-    private boolean alreadyIn; // true means this ticket is unavailable
-    private final String ticketType; // 一日中利用可能な場合は`allDay`が入り、夜のみの場合は`nightOnly`が入るような変数を用意しました
     private final int originalEntranceCount; // 初めの入場回数を保存する
+    private final String ticketType; // 一日中利用可能な場合は`allDay`が入り、夜のみの場合は`nightOnly`が入るような変数を用意しました
+
+    private boolean isTicketUsedUp; // true means this ticket is unavailable
     private int remainingEntranceCount; //残りの入場回数を減らしていく
 
     // ===================================================================================
@@ -48,7 +49,7 @@ public class Ticket {
         this.originalEntranceCount = originalEntranceCount;
         this.remainingEntranceCount = originalEntranceCount;
 
-        // TODO fflute TicketBoothからチケット種別（allDay: 一日中使用可能、nightOnly: 夜のみ使用可能）を受け取るようにしました。
+        // done jflute TicketBoothからチケット種別（allDay: 一日中使用可能、nightOnly: 夜のみ使用可能）を受け取るようにしました。
         this.ticketType = ticketType;
     }
 
@@ -63,12 +64,12 @@ public class Ticket {
         if (!isNight && ticketType.equals("nightOnly")) {
             throw new IllegalStateException("Night only ticket cannot be used now");
         }
-        if (alreadyIn) {
+        if (isTicketUsedUp) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         } else {
             remainingEntranceCount--;
             if (remainingEntranceCount == 0) {
-                alreadyIn = true;
+                isTicketUsedUp = true;
             }
         }
     }
@@ -92,7 +93,7 @@ public class Ticket {
         return originalEntranceCount;
     };
 
-    // TODO flute ticketTypeを返すようなメソッドを追加しました
+    // done jflute ticketTypeを返すようなメソッドを追加しました
     /**
      * チケットのタイプ（一日中使用可能か、夜のみか）を返すメソッド。
      * @return ticketType 一日中利用可能な場合はallDayが入り、夜のみの場合はnightOnlyが入る
@@ -101,6 +102,13 @@ public class Ticket {
         return ticketType;
     };
 
+    /**
+     * チケットを使い切ったかを確認するメソッド。
+     * @return isTicketUsedUp チケットを使い切ったかどうか
+     */
+    public boolean isTicketUsedUp(){
+        return isTicketUsedUp;
+    }
     // #1on1: いいね、alreadyInのニュアンスは元の通り (2026/10/23)
     // 入ったことがあるなのか？入り切ったなのか？
     // $alreadyInの名前を変えたくなった
@@ -111,13 +119,15 @@ public class Ticket {
     // もしくは、正しい名前のメソッドを作って、古い名前のメソッドは非推奨にする。
     // e.g.
     //  @deprecated 曖昧な名前なので、別の isXxxxxxxxUsed() を使ってください。
-    // TODO takahara その観点で、JavaDocの表現がちょっと曖昧 by jflute (2026/10/23)
+    // TODO done takahara その観点で、JavaDocの表現がちょっと曖昧 by jflute (2026/10/23)
+    // TODO jflute ↑isAlreadyInをdeprecatedにして、isTicketUsedUpという名称のメソッドを新規に作成し、推奨するようにしました！
     // 1日分だけ使用したのか？使用し切ったのか？が判断できない文言になってる。
     /**
-     * チケットをすでに使用したかどうかを確認するメソッド。
-     * @return isAlreadyIn チケットをすでに使用したかどうか
+     * チケットを使い切ったかを確認するメソッド。
+     * @deprecated isTicketUsedUp を使用してください。
+     * @return isTicketUsedUp チケットを使い切ったかどうか
      */
     public boolean isAlreadyIn() {
-        return alreadyIn;
+        return isTicketUsedUp;
     }
 }

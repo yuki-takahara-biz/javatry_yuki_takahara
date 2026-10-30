@@ -44,7 +44,7 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_howToUse_basic() {
         TicketBooth booth = new TicketBooth();
-        booth.buyPassport(7400, 1, "allday");
+        booth.buyPassport(7400, 1, "allDay");
         int sea = booth.getQuantity();
         log(sea); // your answer? => 9
     }

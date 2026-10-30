@@ -185,7 +185,7 @@ public class TicketBooth {
             } else if (originalEntranceCount == 2 && handedMoney < TWO_DAY_PRICE) {
                 throw new TicketShortMoneyException("Short Money");
             } else if (originalEntranceCount == 4 && handedMoney < FOUR_DAY_PRICE) {
-                // done takahara ↑3になっちゃってる。4です。 by jflute (2026/10/23)
+                // TODO done takahara ↑3になっちゃってる。4です。 by jflute (2026/10/23)
                 throw new TicketShortMoneyException("Short Money");
             }
         } else if (ticketType.equals("nightOnly")) {

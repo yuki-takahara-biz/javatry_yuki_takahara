@@ -6,11 +6,10 @@ package org.docksidestage.bizfw.basic.buyticket;
  */
 public class TicketBuyResult {
 
-
     private final Ticket ticket;
     private final int change;
 
-    // TODO jflute TicketBuyResultは「Result」の側面を重視し、メソッドは入れずにデータの入れ物として定義するように修正しました！
+    // done jflute TicketBuyResultは「Result」の側面を重視し、メソッドは入れずにデータの入れ物として定義するように修正しました！
     public TicketBuyResult(int change, Ticket ticket) {
         // done takahara Constructorにロジックを入れるか？話 by jflute (2026/10/09)
         // $「お釣りを計算する」というロジックが入っている。
@@ -57,5 +56,7 @@ public class TicketBuyResult {
     /**
      * @return お釣り
      */
-    public int getChange() { return change; };
+    public int getChange() {
+        return change;
+    };
 }

@@ -131,15 +131,15 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-                TicketBooth booth = new TicketBooth();
-                int money = 14000;
-                TicketBuyResult result = booth.buyPassport(money, 2, "allDay");
-                Integer sea = booth.getSalesProceeds() + result.getChange();
-                log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        TicketBuyResult result = booth.buyPassport(money, 2, "allDay");
+        Integer sea = booth.getSalesProceeds() + result.getChange();
+        log(sea); // should be same as money
 
-                // and show two-day passport quantity here
-                int quantity = booth.getQuantity();
-                log(quantity);
+        // and show two-day passport quantity here
+        int quantity = booth.getQuantity();
+        log(quantity);
     }
 
     /**
@@ -227,7 +227,10 @@ public class Step05ClassTest extends PlainTestCase {
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
         // done takahara 金額判定はヤバイ by jflute (2026/10/09)
-        // TODO flute 直しました！
+        // done flute 直しました！
+        // TODO takahara 修行++: これって、キリないですよね？チケット種別の要素(軸)が増えない保証はない by jflute (2026/11/06)
+        // e.g. 2日でallDayだけど、ご飯食べ放題というチケットを作るかもしれない
+        // なので、そういう軸が増えても、修正が要らないif文にしたいところ。
         if (ticket.getOriginalEntranceCount() == 2 && ticket.getTicketType().equals("allDay")) { // write determination for two-day passport
             log("two-day passport");
         } else {
@@ -243,8 +246,11 @@ public class Step05ClassTest extends PlainTestCase {
      * (FourDayPassport (金額は22400) のチケットも買えるようにしましょう)
      */
     public void test_class_moreFix_wonder_four() {
+        // TODO takahara 修行++: チケット種別が増えた時、if文の修正3つを1箇所にしたいところ by jflute (2026/11/06)
+        // 今だと、ifが3箇所 + PRICE定義で1箇所 = 4箇所の修正が必要になっている。
         // your confirmation code here
         TicketBooth booth = new TicketBooth();
+        // TODO takahara 突然、高すぎない？TicketBoothの定数定義を使えたらこういうことも起きない by jflute (2026/11/06)
         int handedMoney = 224000;
         TicketBuyResult buyResult = booth.buyPassport(handedMoney, 4, "allDay");
         Ticket fourDayPassport = buyResult.getTicket();
@@ -267,7 +273,7 @@ public class Step05ClassTest extends PlainTestCase {
         int handedMoney = 7400;
         TicketBuyResult buyResult = booth.buyPassport(handedMoney, 2, "nightOnly");
         Ticket nightOnlyTwoDayPassport = buyResult.getTicket();
-;
+        ;
         nightOnlyTwoDayPassport.doInPark(true); // ここは正常に動作するはず
         nightOnlyTwoDayPassport.doInPark(false); // ここでエラーになるはず
     }
@@ -286,6 +292,7 @@ public class Step05ClassTest extends PlainTestCase {
         int handedMoney = 20000;
         TicketBuyResult buyResult = booth.buyPassport(handedMoney, 2, "allDay");
         Ticket ticket = buyResult.getTicket();
+        // TODO takahara unusedな変数が残ってる by jflute (2026/11/06)
         int change = buyResult.getChange();
         log("display price: " + ticket.getDisplayPrice());
         log("change: " + buyResult.getChange());
@@ -324,6 +331,7 @@ public class Step05ClassTest extends PlainTestCase {
     // ===================================================================================
     //                                                                         Devil Stage
     //                                                                         ===========
+    // #1on1: ここはがっつりリファクタリングになるから、その前に色々ととぅどぅを解消しておいたほうが良い (2026/11/06)
     /**
      * If your specification is to share inventory (quantity) between OneDay/TwoDay/...,
      * change the specification to separate inventory for each OneDay/TwoDay/.... <br>

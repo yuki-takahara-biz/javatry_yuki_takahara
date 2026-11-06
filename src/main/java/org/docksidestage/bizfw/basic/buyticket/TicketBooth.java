@@ -57,11 +57,11 @@ public class TicketBooth {
     // done takahara 戻り値を追加したので、JavaDocにも追加しましょう by jflute (2026/10/09)
     // done jflute JavaDocを書きました！
     // (日本語でOK)
-    // TODO done takahara JavaDoc, 戻り値の説明、@returnを追加でお願いします by jflute (2026/10/23)
-    // TODO done takahara すでに "Buy one-day passport" ではない。 by jflute (2026/10/23)
-    // TODO done takahara もし、ticketTypeに allDoy (おーるどい) と間違い指定されてもある程度動いちゃう by jflute (2026/10/23)
-    // TODO done takahara 修行++: originalEntranceCount が int で間違った値を入れることができちゃう。 by jflute (2026/10/23)
-    // TODO jflute ↑最初にassertTicketTypeAndOriginalEntranceCountCorrectを実行することで確認するようにしました！
+    // done takahara JavaDoc, 戻り値の説明、@returnを追加でお願いします by jflute (2026/10/23)
+    // done takahara すでに "Buy one-day passport" ではない。 by jflute (2026/10/23)
+    // done takahara もし、ticketTypeに allDoy (おーるどい) と間違い指定されてもある程度動いちゃう by jflute (2026/10/23)
+    // done takahara 修行++: originalEntranceCount が int で間違った値を入れることができちゃう。 by jflute (2026/10/23)
+    // done jflute ↑最初にassertTicketTypeAndOriginalEntranceCountCorrectを実行することで確認するようにしました！
     // これ本当はどうにかしたい。(とはいえ、元々のbuyOneDay...()方式に戻すのはアレなので今のままでどうにか)
     // 一方で、元々のbuyOneDay...()方式の特徴も改めて知ることができた。
     /**
@@ -74,11 +74,21 @@ public class TicketBooth {
      * @return チケット購入結果
      */
     public TicketBuyResult buyPassport(int handedMoney, int originalEntranceCount, String ticketType) {
+        // TODO takahara 変数宣言は、メソッドの先頭じゃなくてもOK。使う場面で宣言でOK。 by jflute (2026/11/06)
+        // できるだけスコープは短くしたいところ。(可読性のために)
         Ticket ticket;
         int change;
 
         initializePreviousBuyResult();
-        // TODO jflute メソッド名が長すぎるかもしれないのですがこのような場合の命名方法が知りたいです🙇
+        // done jflute メソッド名が長すぎるかもしれないのですがこのような場合の命名方法が知りたいです🙇
+        // #1on1: ticketTypeとoriginalEntranceCountを包含した抽象概念はないか？ (2026/11/06)
+        // $チケットの種別、でも ticketType って使っちゃってる。
+        // allDay/nightOnlyがチケット種別って呼ぶのがちょっと抽象度違いなのでは？
+        // そっちを直して、チケット種別という抽象概念を取り戻して、それを使ったら？
+        // チケット種別ぐらいの抽象度であれば、何やってるのか？って疑問にもなりにくいかなと。
+        // (ちなみに、jfluteは、GuestUseRequirement ってのも思いついたりした)
+        // 今の時代は、文脈でプログラミングをしていくので、抽象化力が求められる。
+        // TODO takahara ↑というように直してみましょう by jflute (2026/11/06)
         assertTicketTypeAndOriginalEntranceCountCorrect(originalEntranceCount, ticketType);
         assertQuantityEnough();
         isHandedMoneyEnough(handedMoney, originalEntranceCount, ticketType);
@@ -95,19 +105,31 @@ public class TicketBooth {
         return new TicketBuyResult(change, ticket);
     }
 
+    // #1on1: 一応選択肢として、前の人が買って終了したタイミングで初期化するやり方もある。 (2026/11/06)
+    // そっちができるのであれば、一番世話ない。購入の間のときも持たないことになるので想定外の間違い起きにくい。
+    /* e.g.
+    try {
+        return new TicketBuyResult(change, ticket);
+    } finally {
+        initializePreviousBuyResult();
+    }
+     */
+    // 一方で、別の処理がpriceを使ってしまってゴミが残ったりするとイヤってのもあるので、
+    // 最初の時点でinitializeするのも悪くはない。なんだったら両方呼んじゃうってのもアリ。
     /**
      * 前の人の購入履歴を初期化するメソッド
      */
-    private void initializePreviousBuyResult(){
+    private void initializePreviousBuyResult() {
         price = 0;
     }
+
     /**
      * チケット種別と入場回数が、販売可能な組み合わせであることを確認する。
      * @param ticketType チケット種別（allDay または nightOnly）
      * @param originalEntranceCount チケットの初期入場回数
      * @throws TicketTypeAndOriginalEntranceCountIncorrectException チケット種別と入場回数の組み合わせが不正な場合
      */
-    private void assertTicketTypeAndOriginalEntranceCountCorrect(int originalEntranceCount, String ticketType){
+    private void assertTicketTypeAndOriginalEntranceCountCorrect(int originalEntranceCount, String ticketType) {
         if (ticketType.equals("allDay")) {
             if (originalEntranceCount == 1) {
                 return;
@@ -123,8 +145,8 @@ public class TicketBooth {
         }
         throw new TicketTypeAndOriginalEntranceCountIncorrectException("TicketTypeとOriginalEntranceCountの組み合わせがおかしいです");
     }
-    // TODO done takahara step4でやったように、メソッドの定義順序、呼び出し順序に合わせてみましょう by jflute (2026/10/23)
-    // TODO jflute ↑対応しました！メソッドの定義順序をbuyPassportでの呼び出し順序に合わせました！
+    // done takahara step4でやったように、メソッドの定義順序、呼び出し順序に合わせてみましょう by jflute (2026/10/23)
+    // done jflute ↑対応しました！メソッドの定義順序をbuyPassportでの呼び出し順序に合わせました！
 
     // test_class_letsFix_refactor_recycleで追加したメソッド
     // #1on1: $今見たら、priceの部分だけが違うだけで、もうちょい抽象化できるかも (2026/10/09)
@@ -172,6 +194,7 @@ public class TicketBooth {
 
     // #1on1: 銀座のjazzbarのお話。jazzfluteのお話。jfluteのお話 (2026/10/23)
     // done jflute handedMoneyが買いたいチケットに対して十分かどうかを判別する関数を追加しました！
+    // TODO takahara こっちも is で throw するのではなく、assertにしましょう by jflute (2026/11/06)
     /**
      * 渡されたお金が、入場回数・チケットタイプに照らして十分あるかを確認するメソッド
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -185,7 +208,7 @@ public class TicketBooth {
             } else if (originalEntranceCount == 2 && handedMoney < TWO_DAY_PRICE) {
                 throw new TicketShortMoneyException("Short Money");
             } else if (originalEntranceCount == 4 && handedMoney < FOUR_DAY_PRICE) {
-                // TODO done takahara ↑3になっちゃってる。4です。 by jflute (2026/10/23)
+                // done takahara ↑3になっちゃってる。4です。 by jflute (2026/10/23)
                 throw new TicketShortMoneyException("Short Money");
             }
         } else if (ticketType.equals("nightOnly")) {
@@ -202,20 +225,26 @@ public class TicketBooth {
      * @param ticketType "一日/夜のみ"の情報
      */
     private void calculatePrice(int originalEntranceCount, String ticketType) {
-        // TODO done takahara 3を入れた場合、どうなる？汎用buyメソッドで3を指定できちゃうので by jflute (2026/10/23)
-        // TODO jflute ↑最初にassertTicketTypeAndOriginalEntranceCountCorrectを実行するようにしました
+        // done takahara 3を入れた場合、どうなる？汎用buyメソッドで3を指定できちゃうので by jflute (2026/10/23)
+        // done jflute ↑最初にassertTicketTypeAndOriginalEntranceCountCorrectを実行するようにしました
         // 基本的には例外で落とすとかの方が良い。スルーは誤動作になっちゃう。
         // 3だとpriceに前の人の金額が入ってて、売上計上までされてしまう。
         // かつ、在庫が減ってしまう。(実際は買えてないのに)
-        // TODO done takahara priceに前の人の情報が残ってるのが怖い by jflute (2026/10/23)
-        // TODO jflute 最初に前の人の購入履歴を初期化するメソッドを実行するようにしました
+        // done takahara priceに前の人の情報が残ってるのが怖い by jflute (2026/10/23)
+        // done jflute 最初に前の人の購入履歴を初期化するメソッドを実行するようにしました
         // 頑張れば間違った売上計上は防ぐことはできるが、万が一でも違う人の情報を使いたくない。
         // (問題なかったとしても、残すはやめておきたい)
-        // TODO takahara buy利用者も内部利用も "allDay" とハードコードしているので... by jflute (2026/10/23)
-        // TODO jflute buyTicketの「呼び出し」側の不備はassertTicketTypeAndOriginalEntranceCountCorrectで防げるようにしたのですが、
+        // done takahara buy利用者も内部利用も "allDay" とハードコードしているので... by jflute (2026/10/23)
+        // done jflute buyTicketの「呼び出し」側の不備はassertTicketTypeAndOriginalEntranceCountCorrectで防げるようにしたのですが、
         //  「内部利用者」である本メソッドを作成する際に起きるタイポを防ぐにはどうすればいいか案が思い浮かばなかったです。
         // スペルミスとかで簡単に破綻してしまう。コードの表現変更もしたくなったときにやりづらい。
         // (内部利用だけだったらまだしも、たくさんいる想定のbuy利用者もハードコードになるので)
+        // #1on1: スペルミスしたとき、実行時に変な動きにならないようにはできた。 (2026/11/06)
+        // コンパイル時点でスペルミスを防ぐためにはどうしたらいいだろう？という話。
+        // エラーが出るタイミング二種類: コンパイルエラー(チェック)、実行時エラー(チェック)
+        // 今のassertは実行時エラー。でもコンパイルエラーにできた方がベター。
+        // hint1: すでに ONE_DAY_PRICE, TWO_DAY_PRICE の指定はタイプセーフになっている。
+        // TODO takahara ↑同じ要領で、"allDay" や "nightOnly" もスペルミスをコンパイルエラーに by jflute (2026/11/06)
         if (ticketType.equals("allDay")) {
             if (originalEntranceCount == 1) {
                 price = ONE_DAY_PRICE;
